@@ -13,13 +13,18 @@ def call_with_sdk():
         return
 
     client = anthropic.Anthropic()
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=256,
-        messages=[{"role": "user", "content": "What is a neural network in one sentence?"}]
-    )
-    print(f"SDK response: {response.content[0].text}")
-    print(f"Tokens used: {response.usage.input_tokens} in, {response.usage.output_tokens} out")
+    
+    
+    try:
+        response = client.messages.create(
+            model=MODEL,
+            max_tokens=256,
+            messages=[{"role": "user", "content": "What is a neural network in one sentence?"}]
+        )
+        print(f"SDK response: {response.content[0].text}")
+        print(f"Tokens used: {response.usage.input_tokens} in, {response.usage.output_tokens} out")
+    except anthropic.AuthenticationError:
+        print("API key is wrong or expired")
 
 
 def call_raw_http():
@@ -51,5 +56,5 @@ if __name__ == "__main__":
     print("=== API Calls ===\n")
     print("1. Using the SDK:")
     call_with_sdk()
-    print("\n2. Using raw HTTP:")
-    call_raw_http()
+    # print("\n2. Using raw HTTP:")
+    # call_raw_http()
